@@ -1,16 +1,28 @@
 const path = require('path');
 const express = require('express');
 const app = express();
+
 const server = require('http').createServer(app);
-const io =  require('socket.io')(server);
+const io =  require('socket.io')(server, {
+    cors: {
+        origin: '*'
+    }
+});
+
 const formatMessage = require('./utils/messages');
 const { userJoin, getCurrentUser, userLeave, getRoomUsers } = require('./utils/users');
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
 
+const { ExpressPeerServer } = require("peer");
+const peerServer = ExpressPeerServer(server, {
+    debug: true,
+});
 // Роутинг
-app.use(express.static(path.join(__dirname, 'public')));
+app.use("/peerjs", peerServer);
+app.use(express.static("public"));
+// app.use(express.static(path.join(__dirname, 'public')));
 
 const botName = 'Chat';
 const ACCEPTED_ROOMS = ["Room №1", "Room №2", "Room №3"];

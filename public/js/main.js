@@ -33,9 +33,15 @@ stopVideo.addEventListener("click", () => {
 
 
 const myPeer = new Peer(undefined, {
-    host: 'localhost',
-    port: '3001'
+    path: "/peerjs",
+    host: '/',
+    port: 443,
+    secure: true,
 })
+// const myPeer = new Peer(undefined, {
+//     host: 'localhost',
+//     port: '3001'
+// })
 const peers = {}
 
 let typing = false;
